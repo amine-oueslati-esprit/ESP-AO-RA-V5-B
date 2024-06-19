@@ -74,17 +74,17 @@ public class RiskService implements IRiskService {
 
     @Override
     public float calcInherentRiskScore(float vh, float ih) {
-        return vh * ih;
+        return Math.max(0,vh * ih);
     }
 
     @Override
     public void calcRealRiskScore(Risk s) {
         List<Control> ls = s.getControlList();
-
         for (Control x : ls) {
             if (x.isExists()) {
-                s.setRealImpact(s.getInherentImpact() - x.getValeurReductionImpact());
-                s.setRealProbability(s.getInherentProbability() - x.getValeurReductionProbabilite());
+                    s.setRealImpact(Math.max(0,s.getInherentImpact() - x.getValeurReductionImpact()));
+                    s.setRealProbability(Math.max(0,s.getInherentProbability() - x.getValeurReductionProbabilite()));
+
             }
         }
         s.setRealRiskScore(s.getRealProbability() * s.getRealImpact());
@@ -98,14 +98,15 @@ public class RiskService implements IRiskService {
 
         for (Control x : ls) {
             if (!x.isExists()) { // Si controle pas encore mis en place
-                s.setResidualImpact(s.getRealImpact() - x.getValeurReductionImpact());
-                s.setResidualProbability(s.getRealProbability() - x.getValeurReductionProbabilite());
+                s.setResidualImpact(Math.max(0, s.getRealImpact() - x.getValeurReductionImpact()));
+                s.setResidualProbability(Math.max(0, s.getRealProbability() - x.getValeurReductionProbabilite()));
             }
         }
         s.setResidualScore(s.getResidualProbability() * s.getResidualImpact());
         s.setResidualRiskLevel(determineRiskLevel(s.getResidualScore()));
         rRepo.save(s);
     }
+
 
     @Override
     public riskLevel determineRiskLevel(float riskscore) {
