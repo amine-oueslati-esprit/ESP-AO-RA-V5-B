@@ -69,5 +69,11 @@ public class Risk implements Serializable {
     //CONTROL + RISK ASSOCIATION
     @JsonIgnore
     @ManyToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @JoinTable(
+            name = "risk_control_list",
+            joinColumns = @JoinColumn(name = "risk_list_id_risk"),
+            inverseJoinColumns = @JoinColumn(name = "control_list_id_control"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"risk_list_id_risk", "control_list_id_control"})
+    )
     List <Control> controlList=new ArrayList<Control>();
 }
