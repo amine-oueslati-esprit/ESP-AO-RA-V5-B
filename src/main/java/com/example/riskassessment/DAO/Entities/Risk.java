@@ -16,6 +16,8 @@ import java.util.List;
 @Builder
 @Entity
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Table(uniqueConstraints={@UniqueConstraint(columnNames={"scenario_id_scenario","asset_id_asset","threat_id_threat",
+"vulnerability_id_vulnerability"})})
 public class Risk implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,24 +47,28 @@ public class Risk implements Serializable {
     // ASSET + RISK ASSOCIATION
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "asset_id_asset")
     Asset asset;
 
     //Parent
     // VUL + RISK ASSOCIATION
     @JsonIgnore
     @ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @JoinColumn(name = "vulnerability_id_vulnerability")
     Vulnerability vulnerability;
 
     //Parent
     // THREAT + RISK ASSOCIATION
     @JsonIgnore
     @ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @JoinColumn(name = "threat_id_threat")
     Threat threat;
 
     //Parent
     // SCENARIO + RISK ASSOCIATION
     @JsonIgnore
     @ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @JoinColumn(name = "scenario_id_scenario")
     Scenario scenario ;
 
     //parent
