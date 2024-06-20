@@ -16,8 +16,7 @@ import java.util.List;
 @Builder
 @Entity
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Table(uniqueConstraints={@UniqueConstraint(columnNames={"scenario_id_scenario","asset_id_asset","threat_id_threat",
-"vulnerability_id_vulnerability"})})
+@Table(uniqueConstraints={@UniqueConstraint(columnNames={"asset_id_asset", "vulnerability_id_vulnerability", "threat_id_threat", "scenario_id_scenario"})})
 public class Risk implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
