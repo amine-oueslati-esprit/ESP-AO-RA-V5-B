@@ -12,7 +12,7 @@ public interface riskRepo extends JpaRepository<Risk, Long> {
     @Query("SELECT r FROM Risk r LEFT JOIN FETCH r.controlList")
     List<Risk> findAllWithControls();
 
-    boolean existsByAsset_IdAssetAndVulnerability_IdVulnerabilityAndThreat_IdThreatAndScenario_IdScenario(Long assetId, Long vulnerabilityId, Long threatId, Long scenarioId);
+    //boolean existsByAsset_IdAssetAndVulnerability_IdVulnerabilityAndThreat_IdThreatAndScenario_IdScenario(Long assetId, Long vulnerabilityId, Long threatId, Long scenarioId);
 
 
     @Query("SELECT CASE WHEN COUNT(r) > 0 THEN true ELSE false END FROM Risk r WHERE r.asset.idAsset = :assetId AND r.vulnerability.idVulnerability = :vulnerabilityId AND r.threat.idThreat = :threatId AND r.scenario.idScenario = :scenarioId")
