@@ -7,6 +7,7 @@ import com.example.riskassessment.DAO.Repositories.assetRepo;
 import com.example.riskassessment.DAO.Repositories.vulnerabilityRepo;
 import com.example.riskassessment.DAO.Repositories.threatRepo;
 import com.example.riskassessment.DAO.Repositories.scenarioRepo;
+import com.example.riskassessment.Exceptions.DuplicateRiskException;
 import com.example.riskassessment.Services.Interfaces.IRiskService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -27,16 +28,20 @@ public class RiskService implements IRiskService {
     @Override
     public Risk addRisk(Risk r, long aid, long vid, long tid, long sid) {
 
+        boolean exists = rRepo.duplicatesCheck(aid, vid, tid, sid);
+        if (exists) {
+            throw new DuplicateRiskException("A Risk with the same Asset ID, Vulnerability ID, Threat ID, and Scenario ID already exists.");
+        }
         Asset a= aRepo.getReferenceById(aid);
         r.setAsset(a);
 
-        Vulnerability v= vRepo.getReferenceById(aid);
+        Vulnerability v= vRepo.getReferenceById(vid);
         r.setVulnerability(v);
 
         Threat t= tRepo.getReferenceById(tid);
         r.setThreat(t);
 
-        Scenario s= sRepo.getReferenceById(tid);
+        Scenario s= sRepo.getReferenceById(sid);
         r.setScenario(s);
 
         r.setInherentRiskScore(calcInherentRiskScore(r.getInherentProbability(), r.getInherentImpact()));
@@ -152,4 +157,5 @@ return null;        }
         calcResidualRiskScore(risk);
         rRepo.save(risk);
     }
+
 }

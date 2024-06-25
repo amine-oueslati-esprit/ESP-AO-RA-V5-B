@@ -1,5 +1,6 @@
 package com.example.riskassessment.Services.Interfaces;
 import com.example.riskassessment.DAO.Entities.Asset;
+import com.example.riskassessment.DAO.Entities.Risk;
 
 import java.util.List;
 
@@ -11,5 +12,6 @@ public interface IAssetService {
     void deleteActif(long id);
     void deleteActif(Asset a);
     void setRiskAsset(long ididasset, long idrisk);
+
 
 }
